@@ -3,17 +3,400 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#12181a">
 <title>Scheda — Ripartenza</title>
 <style>
-:root{--bg:#12181a;--panel:#1b2427;--panel-2:#212c2f;--line:#2b383c;--text:#e9edee;--muted:#8fa3a8;--accent:#5fb8a8;--accent-dim:#3d7d72;--warn:#d98c5f;--font-head:'Iowan Old Style','Georgia',serif;--font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}*{box-sizing:border-box}html,body{margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased;padding-bottom:70px}header{padding:28px 20px 18px;border-bottom:1px solid var(--line)}header h1{font-family:var(--font-head);font-weight:600;font-size:26px;margin:0 0 4px;letter-spacing:.2px}header p{margin:0;color:var(--muted);font-size:14px}.phase-banner{margin:16px 20px 0;padding:12px 14px;background:var(--panel-2);border-left:3px solid var(--accent);border-radius:4px;font-size:13.5px;color:var(--text);line-height:1.5}.phase-banner b{color:var(--accent)}.weeknav{display:flex;gap:8px;margin:14px 20px 0}.weeknav button{flex:1;padding:8px 4px;background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:6px;font-size:13px;font-family:var(--font-body)}.weeknav button.active{background:var(--accent-dim);color:#fff;border-color:var(--accent)}.daytabs{display:flex;gap:8px;padding:18px 20px 0}.daytabs button{flex:1;padding:12px 8px;background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:10px;font-size:14px;font-weight:600;font-family:var(--font-body)}.daytabs button.active{background:var(--accent);color:#0c1415;border-color:var(--accent)}main{padding:18px 20px 20px}.section-label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin:22px 0 10px}.section-label:first-child{margin-top:4px}.exercise{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px;margin-bottom:10px}.ex-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.ex-name{font-size:15.5px;font-weight:600;line-height:1.3}.ex-target{color:var(--muted);font-size:12.5px;margin-top:2px}.ex-note{color:var(--warn);font-size:12px;margin-top:6px;line-height:1.4}.ex-controls{display:flex;gap:8px;margin-top:12px;align-items:center}.weight-input{width:76px;padding:9px 8px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;color:var(--text);font-size:15px;text-align:center}.weight-input:focus{outline:none;border-color:var(--accent)}.unit{color:var(--muted);font-size:13px}.done-btn{margin-left:auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--panel-2);color:var(--muted);font-size:16px;display:flex;align-items:center;justify-content:center}.done-btn.on{background:var(--accent);border-color:var(--accent);color:#0c1415}.rest-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}.rest-chip{padding:6px 12px;background:transparent;border:1px solid var(--line);border-radius:20px;color:var(--muted);font-size:12.5px}footer{position:fixed;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--line);padding:10px 20px calc(10px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--muted)}footer button{background:none;border:none;color:var(--accent);font-size:13px;font-family:var(--font-body)}.timer-overlay{position:fixed;inset:0;background:rgba(10,14,15,.92);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:50}.timer-overlay.show{display:flex}.timer-num{font-family:var(--font-head);font-size:64px;color:var(--accent)}.timer-label{color:var(--muted);font-size:14px;margin-top:6px}.timer-overlay button{margin-top:28px;padding:10px 22px;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:20px}
-</style></head><body>
-<header><h1>Ripartenza — Settembre 2026</h1><p>178 cm · focus V-shape · 2 giorni fissi + 1 opzionale</p></header>
-<div class="phase-banner" id="phaseBanner"></div><div class="weeknav" id="weeknav"></div>
-<div class="daytabs"><button data-day="A" class="active">Giorno A</button><button data-day="B">Giorno B</button><button data-day="C">Giorno C</button></div>
-<main id="main"></main><footer><span>Tocca il peso per registrarlo</span><button id="resetBtn">Azzera settimana</button></footer>
-<div class="timer-overlay" id="timerOverlay"><div class="timer-num" id="timerNum">90</div><div class="timer-label">recupero</div><button id="timerStop">chiudi</button></div>
+  :root{
+    --bg: #12181a;
+    --panel: #1b2427;
+    --panel-2: #212c2f;
+    --line: #2b383c;
+    --text: #e9edee;
+    --muted: #8fa3a8;
+    --accent: #5fb8a8;
+    --accent-dim: #3d7d72;
+    --warn: #d98c5f;
+    --font-head: 'Iowan Old Style', 'Georgia', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:70px;
+  }
+  header{
+    padding:28px 20px 18px;
+    border-bottom:1px solid var(--line);
+  }
+  header h1{
+    font-family:var(--font-head);
+    font-weight:600;
+    font-size:26px;
+    margin:0 0 4px;
+    letter-spacing:0.2px;
+  }
+  header p{
+    margin:0;
+    color:var(--muted);
+    font-size:14px;
+  }
+  .daytabs{
+    display:flex;
+    gap:8px;
+    padding:18px 20px 0;
+  }
+  .daytabs button{
+    flex:1;
+    padding:12px 8px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--muted);
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    font-family:var(--font-body);
+  }
+  .daytabs button.active{
+    background:var(--accent);
+    color:#0c1415;
+    border-color:var(--accent);
+  }
+  main{padding:18px 20px 20px;}
+  .section-label{
+    color:var(--muted);
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin:22px 0 10px;
+  }
+  .section-label:first-child{margin-top:4px;}
+  .exercise{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 14px 12px;
+    margin-bottom:10px;
+  }
+  .ex-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .ex-name{
+    font-size:15.5px;
+    font-weight:600;
+    line-height:1.3;
+  }
+  .ex-target{
+    color:var(--muted);
+    font-size:12.5px;
+    margin-top:2px;
+  }
+  .ex-note{
+    color:var(--warn);
+    font-size:12px;
+    margin-top:6px;
+    line-height:1.4;
+  }
+  .ex-controls{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+    align-items:center;
+  }
+  .weight-input{
+    width:76px;
+    padding:9px 8px;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:8px;
+    color:var(--text);
+    font-size:15px;
+    text-align:center;
+  }
+  .weight-input:focus{outline:none;border-color:var(--accent);}
+  .unit{color:var(--muted);font-size:13px;}
+  .done-btn{
+    margin-left:auto;
+    width:34px;height:34px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    color:var(--muted);
+    font-size:16px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .done-btn.on{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#0c1415;
+  }
+  .rest-row{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+    flex-wrap:wrap;
+  }
+  .rest-chip{
+    padding:6px 12px;
+    background:transparent;
+    border:1px solid var(--line);
+    border-radius:20px;
+    color:var(--muted);
+    font-size:12.5px;
+  }
+  .rest-chip.running{
+    border-color:var(--accent);
+    color:var(--accent);
+  }
+  footer{
+    position:fixed;
+    bottom:0;left:0;right:0;
+    background:var(--panel);
+    border-top:1px solid var(--line);
+    padding:10px 20px calc(10px + env(safe-area-inset-bottom));
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  footer button{
+    background:none;border:none;color:var(--accent);
+    font-size:13px;font-family:var(--font-body);
+  }
+  .timer-overlay{
+    position:fixed;inset:0;
+    background:rgba(10,14,15,0.92);
+    display:none;
+    align-items:center;justify-content:center;
+    flex-direction:column;
+    z-index:50;
+  }
+  .timer-overlay.show{display:flex;}
+  .timer-num{
+    font-family:var(--font-head);
+    font-size:64px;
+    color:var(--accent);
+  }
+  .timer-label{color:var(--muted);font-size:14px;margin-top:6px;}
+  .timer-overlay button{
+    margin-top:28px;
+    padding:10px 22px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--text);
+    border-radius:20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Ripartenza — Settembre 2026</h1>
+  <p>178 cm · focus V-shape · 2 giorni fissi + 1 opzionale</p>
+  <p style="margin-top:8px;color:var(--accent);font-size:12.5px;line-height:1.5;">Prime 1-2 settimane: resta nella fascia bassa del range consigliato, mai a cedimento. Poi progressione normale: completi il range con tecnica buona → sali di uno scatto minimo.</p>
+</header>
+
+<div class="daytabs">
+  <button data-day="A" class="active">Giorno A</button>
+  <button data-day="B">Giorno B</button>
+  <button data-day="C">Giorno C</button>
+</div>
+
+<main id="main"></main>
+
+<footer>
+  <span id="footerNote">Tocca il peso per registrarlo</span>
+  <button id="resetBtn">Azzera spunte</button>
+</footer>
+
+<div class="timer-overlay" id="timerOverlay">
+  <div class="timer-num" id="timerNum">90</div>
+  <div class="timer-label">recupero</div>
+  <button id="timerStop">chiudi</button>
+</div>
+
 <script>
-const DATA={A:{label:"Upper / V-Shape",exercises:[{id:"vt",name:"Vertical Traction ROM",target:"4×8",w:[42,48],note:""},{id:"cp",name:"Chest Press ROM",target:"3×8",w:[38,44],note:""},{id:"row",name:"Rowing",target:"3×10",w:[21,24],note:""},{id:"delt_a",name:"Deltoidi Machine",target:"4×12",w:[21,24],note:""},{id:"pd_a",name:"Pec Deck",target:"3×12",w:null,note:"Non inseguire il carico: 12 pulite > 8 con tecnica che cede."},{id:"curl_a",name:"Curl manubri alternato",target:"3×10",w:null,note:""},{id:"tri_a",name:"Triceps Press ROM",target:"3×12",w:[18,21],note:""}],core:[{id:"deadbug",name:"Dead Bug",target:"2×8 / lato",w:null,note:"Senza peso"},{id:"revcrunch",name:"Reverse Crunch",target:"2×10",w:null,note:""}]},B:{label:"Lower + richiamo",exercises:[{id:"lp",name:"Advanced Leg Press",target:"4×10",w:[77,88],note:""},{id:"hs",name:"Advanced Hack Squat",target:"3×10",w:[42,48],note:""},{id:"lc",name:"Leg Curl ROM",target:"3×12",w:[21,24],note:""},{id:"slc",name:"Standing Leg Curl",target:"3×12 / gamba",w:[24,28],note:""},{id:"gp",name:"Gluteus Press ROM",target:"3×12",w:null,note:"Nuovo esercizio: peso leggero, priorità alla tecnica (attenzione lombare)."},{id:"rd",name:"Rear Delt",target:"3×12-15",w:null,note:"Come Pec Deck: qualità, non carico."},{id:"curl_b",name:"Curl manubri",target:"2×10",w:null,note:""},{id:"tri_b",name:"Triceps Press ROM",target:"2×12",w:[18,21],note:""}],core:[{id:"kneeraise",name:"Knee Raise (schienale)",target:"3×10-12",w:null,note:"Niente slancio, piccola retroversione bacino in alto."},{id:"sideplank_b",name:"Side Plank",target:"2×20s / lato",w:null,note:""}]},C:{label:"V-Pump — plus effettivo",exercises:[{id:"latpull",name:"Lat Pulldown",target:"3×12",w:null,note:""},{id:"delt_c",name:"Deltoidi Machine (variante angolo)",target:"3×12-15",w:null,note:""},{id:"curl_c",name:"Curl manubri (martello / inclinata)",target:"3×10-12",w:null,note:"Variante rispetto ad A/B"},{id:"tri_c",name:"Triceps Press / French press manubri",target:"3×12-15",w:null,note:"Variante rispetto ad A/B"},{id:"pd_c",name:"Pec Deck",target:"3×12-15",w:null,note:""},{id:"cardio",name:"Cardio moderato",target:"10-15 min",w:null,note:""}],core:[{id:"kneeraise_c",name:"Knee Raise",target:"3×10-12",w:null,note:""},{id:"revcrunch_c",name:"Reverse Crunch",target:"2×12",w:null,note:""},{id:"sideplank_c",name:"Side Plank",target:"2×20s / lato",w:null,note:""}]}};
-const REST={A:90,B:90,C:75};let state=JSON.parse(localStorage.getItem('workoutState')||'{}');if(!state.currentWeek)state.currentWeek=1;if(!state.logs)state.logs={};if(!state.done)state.done={};function save(){localStorage.setItem('workoutState',JSON.stringify(state))}function phaseText(w){return w<=2?`<b>Settimana ${w} di 2 — riadattamento.</b> Resta nella fascia bassa del range indicato, mai a cedimento: finisci ogni serie pensando che avresti potuto fare altre 2-3 ripetizioni.`:`<b>Settimana ${w} — progressione normale.</b> Completi il range di reps in tutte le serie con tecnica buona → sali di uno scatto minimo la prossima volta.`}function renderWeekNav(){const n=document.getElementById('weeknav');n.innerHTML='';for(let w=1;w<=8;w++){const b=document.createElement('button');b.textContent='S'+w;if(w===state.currentWeek)b.className='active';b.onclick=()=>{state.currentWeek=w;save();render()};n.appendChild(b)}document.getElementById('phaseBanner').innerHTML=phaseText(state.currentWeek)}let currentDay='A';function suggestedWeight(ex){if(!ex.w)return null;return state.currentWeek<=2?ex.w[0]+'–'+ex.w[1]:'≥'+ex.w[1]}function exerciseCard(ex,d){const key=d+'_'+ex.id+'_w'+state.currentWeek,doneKey=key+'_done',savedVal=state.logs[key]||'',isDone=!!state.done[doneKey],div=document.createElement('div'),sugg=suggestedWeight(ex);div.className='exercise';div.innerHTML=`<div class="ex-top"><div><div class="ex-name">${ex.name}</div><div class="ex-target">${ex.target}${sugg?' · consigliato '+sugg+' kg':''}</div>${ex.note?`<div class="ex-note">${ex.note}</div>`:''}</div></div><div class="ex-controls">${ex.id!=='cardio'?`<input type="number" inputmode="decimal" class="weight-input" placeholder="kg" value="${savedVal}"><span class="unit">kg</span>`:''}<button class="done-btn ${isDone?'on':''}" aria-label="Segna esercizio completato">✓</button></div>${ex.id!=='cardio'?`<div class="rest-row"><button class="rest-chip">recupero</button></div>`:''}`;const input=div.querySelector('.weight-input');if(input)input.addEventListener('change',()=>{state.logs[key]=input.value;save()});div.querySelector('.done-btn').addEventListener('click',e=>{state.done[doneKey]=!state.done[doneKey];save();e.target.classList.toggle('on')});const rest=div.querySelector('.rest-chip');if(rest)rest.addEventListener('click',()=>startTimer(REST[d]||60));return div}function render(){renderWeekNav();const main=document.getElementById('main'),day=DATA[currentDay];main.innerHTML='';const label=document.createElement('div');label.className='section-label';label.textContent=day.label;main.appendChild(label);day.exercises.forEach(ex=>main.appendChild(exerciseCard(ex,currentDay)));const c=document.createElement('div');c.className='section-label';c.textContent='Addome';main.appendChild(c);day.core.forEach(ex=>main.appendChild(exerciseCard(ex,currentDay)))}document.querySelectorAll('.daytabs button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.daytabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentDay=btn.dataset.day;render()}));document.getElementById('resetBtn').addEventListener('click',()=>{if(confirm('Azzerare le spunte di questa settimana?')){Object.keys(state.done).forEach(k=>{if(k.includes('_w'+state.currentWeek+'_done'))delete state.done[k]});save();render()}});let timerInterval=null;function startTimer(seconds){const overlay=document.getElementById('timerOverlay'),num=document.getElementById('timerNum');overlay.classList.add('show');let remaining=seconds;num.textContent=remaining;clearInterval(timerInterval);timerInterval=setInterval(()=>{remaining--;num.textContent=remaining;if(remaining<=0){clearInterval(timerInterval);if(navigator.vibrate)navigator.vibrate([200,100,200]);overlay.classList.remove('show')}},1000)}document.getElementById('timerStop').addEventListener('click',()=>{clearInterval(timerInterval);document.getElementById('timerOverlay').classList.remove('show')});render();
-</script></body></html>
+const DATA = {
+  A: {
+    label: "Upper / V-Shape",
+    exercises: [
+      {id:"vt", name:"Vertical Traction ROM", target:"4×8", w:[42,48], note:""},
+      {id:"cp", name:"Chest Press ROM", target:"3×8", w:[38,44], note:""},
+      {id:"row", name:"Rowing", target:"3×10", w:[21,24], note:""},
+      {id:"delt_a", name:"Deltoidi Machine", target:"4×12", w:[21,24], note:""},
+      {id:"pd_a", name:"Pec Deck", target:"3×12", w:null, note:"Non inseguire il carico: 12 pulite > 8 con tecnica che cede."},
+      {id:"curl_a", name:"Curl manubri alternato", target:"3×10", w:null, note:"", dumbbell:true},
+      {id:"tri_a", name:"Triceps Press ROM", target:"3×12", w:[18,21], note:""},
+    ],
+    core: [
+      {id:"deadbug", name:"Dead Bug", target:"2×8 / lato", w:null, note:"Senza peso"},
+      {id:"revcrunch", name:"Reverse Crunch", target:"2×10", w:null, note:""},
+    ]
+  },
+  B: {
+    label: "Lower + richiamo",
+    exercises: [
+      {id:"lp", name:"Advanced Leg Press", target:"4×10", w:[77,88], note:""},
+      {id:"hs", name:"Advanced Hack Squat", target:"3×10", w:[42,48], note:""},
+      {id:"lc", name:"Leg Curl ROM", target:"3×12", w:[21,24], note:""},
+      {id:"slc", name:"Standing Leg Curl", target:"3×12 / gamba", w:[24,28], note:""},
+      {id:"gp", name:"Gluteus Press ROM", target:"3×12", w:null, note:"Nuovo esercizio: peso leggero, priorità alla tecnica (attenzione lombare)."},
+      {id:"rd", name:"Rear Delt", target:"3×12-15", w:null, note:"Come Pec Deck: qualità, non carico."},
+      {id:"curl_b", name:"Curl manubri", target:"2×10", w:null, note:"", dumbbell:true},
+      {id:"tri_b", name:"Triceps Press ROM", target:"2×12", w:[18,21], note:""},
+    ],
+    core: [
+      {id:"kneeraise", name:"Knee Raise (schienale)", target:"3×10-12", w:null, note:"Niente slancio, piccola retroversione bacino in alto."},
+      {id:"sideplank_b", name:"Side Plank", target:"2×20s / lato", w:null, note:""},
+    ]
+  },
+  C: {
+    label: "V-Pump — plus effettivo",
+    exercises: [
+      {id:"latpull", name:"Lat Pulldown", target:"3×12", w:null, note:""},
+      {id:"delt_c", name:"Deltoidi Machine (variante angolo)", target:"3×12-15", w:null, note:""},
+      {id:"curl_c", name:"Curl manubri (martello / inclinata)", target:"3×10-12", w:null, note:"Variante rispetto ad A/B", dumbbell:true},
+      {id:"tri_c", name:"Triceps Press / French press manubri", target:"3×12-15", w:null, note:"Variante rispetto ad A/B"},
+      {id:"pd_c", name:"Pec Deck", target:"3×12-15", w:null, note:""},
+      {id:"cardio", name:"Cardio moderato", target:"10-15 min", w:null, note:""},
+    ],
+    core: [
+      {id:"kneeraise_c", name:"Knee Raise", target:"3×10-12", w:null, note:""},
+      {id:"revcrunch_c", name:"Reverse Crunch", target:"2×12", w:null, note:""},
+      {id:"sideplank_c", name:"Side Plank", target:"2×20s / lato", w:null, note:""},
+    ]
+  }
+};
+
+const REST = {A:90, B:90, C:75};
+
+let state = JSON.parse(localStorage.getItem('workoutState') || '{}');
+if(!state.logs) state.logs = {};
+if(!state.done) state.done = {};
+
+function save(){ localStorage.setItem('workoutState', JSON.stringify(state)); }
+
+let currentDay = 'A';
+
+function suggestedWeight(ex){
+  if(!ex.w) return null;
+  return ex.w[0] + '–' + ex.w[1];
+}
+
+function exerciseCard(ex, dayKey){
+  const key = dayKey+'_'+ex.id;
+  const doneKey = dayKey+'_'+ex.id+'_done';
+  const savedVal = state.logs[key] || '';
+  const isDone = !!state.done[doneKey];
+
+  const div = document.createElement('div');
+  div.className = 'exercise';
+  const sugg = suggestedWeight(ex);
+
+  div.innerHTML = `
+    <div class="ex-top">
+      <div>
+        <div class="ex-name">${ex.name}</div>
+        <div class="ex-target">${ex.target}${sugg ? ' · consigliato ' + sugg + ' kg' : ''}</div>
+        ${ex.note ? `<div class="ex-note">${ex.note}</div>` : ''}
+      </div>
+    </div>
+    <div class="ex-controls">
+      ${ex.id !== 'cardio' ? `
+      <input type="number" inputmode="decimal" class="weight-input" placeholder="kg" value="${savedVal}">
+      <span class="unit">kg</span>` : ''}
+      <button class="done-btn ${isDone?'on':''}">✓</button>
+    </div>
+    ${ex.id !== 'cardio' ? `<div class="rest-row"><button class="rest-chip">recupero</button></div>` : ''}
+  `;
+
+  const input = div.querySelector('.weight-input');
+  if(input){
+    input.addEventListener('change', () => {
+      state.logs[key] = input.value;
+      save();
+    });
+  }
+  div.querySelector('.done-btn').addEventListener('click', (e) => {
+    state.done[doneKey] = !state.done[doneKey];
+    save();
+    e.target.classList.toggle('on');
+  });
+  const restChip = div.querySelector('.rest-chip');
+  if(restChip){
+    restChip.addEventListener('click', () => startTimer(REST[dayKey] || 60));
+  }
+  return div;
+}
+
+function render(){
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+  const day = DATA[currentDay];
+
+  const label = document.createElement('div');
+  label.className = 'section-label';
+  label.textContent = day.label;
+  main.appendChild(label);
+
+  day.exercises.forEach(ex => main.appendChild(exerciseCard(ex, currentDay)));
+
+  const coreLabel = document.createElement('div');
+  coreLabel.className = 'section-label';
+  coreLabel.textContent = 'Addome';
+  main.appendChild(coreLabel);
+
+  day.core.forEach(ex => main.appendChild(exerciseCard(ex, currentDay)));
+}
+
+document.querySelectorAll('.daytabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.daytabs button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentDay = btn.dataset.day;
+    render();
+  });
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if(confirm('Azzerare tutte le spunte?')){
+    state.done = {};
+    save();
+    render();
+  }
+});
+
+// Rest timer
+let timerInterval = null;
+function startTimer(seconds){
+  const overlay = document.getElementById('timerOverlay');
+  const num = document.getElementById('timerNum');
+  overlay.classList.add('show');
+  let remaining = seconds;
+  num.textContent = remaining;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    remaining--;
+    num.textContent = remaining;
+    if(remaining <= 0){
+      clearInterval(timerInterval);
+      if(navigator.vibrate) navigator.vibrate([200,100,200]);
+      overlay.classList.remove('show');
+    }
+  }, 1000);
+}
+document.getElementById('timerStop').addEventListener('click', () => {
+  clearInterval(timerInterval);
+  document.getElementById('timerOverlay').classList.remove('show');
+});
+
+render();
+</script>
+</body>
+</html>
